@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[autostyle]{csquotes}
+\usepackage{amsmath}
+\usepackage[T1]{fontenc}
+\usepackage{romannum}
+\usepackage{calligra} % handwritten font
+%\usepackage{newtxtext} % For text font
+\usepackage{newtxmath}
+\usepackage{float}
+%\usepackage{pdfpages}
+\usepackage{pifont}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage[export]{adjustbox}
+\usepackage{tcolorbox}
+\usepackage{multicol}
+%\usepackage{pgfplots}  % matplotlib plots
+%\usepackage{tikz}
+%\usetikzlibrary{shapes.geometric, shapes.multipart, arrows, positioning, arrows.meta}
+\usepackage[bottom]{footmisc}  % fix footnotes at the bottom of the page
+\usepackage{hyperref}
+\usepackage[a4paper, margin=1cm]{geometry}
+%\usepackage[toc, section=section]{glossaries}
+\usepackage[all]{hypcap}  % needed to help hyperlinks direct correctly
+
+% hyperlinks
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=black, %choose some color if you want links to stand out
+    citecolor=black,
+}
+
+% table of contents
+\renewcommand\contentsname{CONTENTS}
+
+\setstretch{1.1}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{center}
+    \Large \textbf{IE 554 Project Proposal} \\
+    \normalsize \textsl{Emek Irmak \& Ömer Turan Şahinaslan}
+\end{center}
+
+\textbf{\large Problem Description}
+\vspace*{-2mm}
+
+\paragraph{} Graph partitioning is a key topic in optimization. We study the \textbf{Dominator Partition Problem}, introduced by Hedetniemi and Haynes (2006) \cite{dominator_partitions}, and propose an exact integer programming model with potential improvements.
+
+\paragraph{} In graph $G = (V, E)$, a vertex $v$ \textit{dominates} set $S \subseteq V$ if it's adjacent to all $u \in S$. A \textbf{dominator partition} divides $V$ into $k$ blocks, such that each $v \in V$ dominates at least one of the blocks. The goal is to find the smallest such $k$, called $\pi_d(G)$.
+
+\vspace{5mm}
+
+\textbf{\large Our Plan}
+\vspace*{-2mm}
+
+\paragraph{} We gave the following IP model for the dominator partition problem for a fixed $k$:
+
+\hspace{4mm}
+\scalebox{0.95}{%
+  \parbox{\linewidth}{%
+    \input{model.tex}%
+  }%
+}
+
+\vspace{-6mm}
+\paragraph{} The planned contributions are:
+\begin{itemize}[label=, itemsep=0pt]
+    \item \textbf{Exact IP Model}: First IP formulation for dominator partitioning.
+    \item \textbf{Model Strengthening}: Add valid inequalities.
+    \item \textbf{Experiments}: Compare original vs. improved models on graphs of various sizes.
+\end{itemize}
+
+\textbf{\large Literature Review}
+\vspace*{-2mm}
+
+\paragraph{} Most existing work is theoretical, focused on complexity and special graph classes \cite{dominator_partitions}. Determining $\pi_d(G)$ is NP-complete, but no exact IP formulation exists in prior literature. Our study fills this gap.
+
+\small
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+\bibitem{dominator_partitions}
+S. M. Hedetniemi et al., \textit{Dominator Partitions of Graphs}, 2008.
+\end{thebibliography}
+
+\end{document}

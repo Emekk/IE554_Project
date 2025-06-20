@@ -1,0 +1,34 @@
+\section{Formulation of Dominator Partition Problem}
+\label{sec:dominator_partition_fixed_k}
+
+
+\subsection*{Sets \& Parameters}
+\begin{itemize}[label=, noitemsep]
+    \item $G=(V,E)$: a graph with vertex set $V$ and edge set $E$
+    \item $\pi$: dominator partition of size $k$ of $G$
+\end{itemize}
+
+\subsection*{Decision Variables}
+\begin{itemize}[label=, noitemsep]
+    \item $x_{vi}$: 1 if vertex $v$ is assigned to the $i$\textsuperscript{th} block
+    \item $d_{vi}$: 1 if vertex $v$ dominates block $i$
+\end{itemize}
+
+\subsection*{Objective Function \& Constraints}
+\vspace*{-4mm}
+\begin{align*}
+    \intertext{Since $k$ is fixed, we only seek a feasible assignment satisfying all constraints.}
+    \min \quad &0 \qquad \text{subject to:}
+    \intertext{Each vertex must be assigned to exactly one of the $k$ blocks.}
+    &\sum_{i=1}^{k} x_{vi} = 1, \quad \forall v \in V
+    \intertext{Every block in the partition must contain at least one vertex; no block is left empty.}
+    &\sum_{v \in V} x_{vi} \geq 1 \quad \forall i \in \pi
+    \intertext{If two vertices are not adjacent, then one cannot be in a block while the other dominates it.}
+    &x_{ui} + d_{vi} \leq 1 \quad \{\forall u, v \in V \mid \{u,v\} \notin E\}, i \in \pi
+    \intertext{Each vertex must dominate at least one block to satisfy the dominator partition condition.}
+    &\sum_{i=1}^{k} d_{vi} \geq 1 \quad \forall v \in V
+    \intertext{To eliminate symmetric solutions, the blocks are required to be used in order.}
+    & \sum_{v \in V} x_{vi} \geq \sum_{v \in V} x_{v,i+1} \quad \forall i \in \{1, 2, \dots, k-1\}
+    \intertext{All decision variables are binary.}
+    &x_{vi}, d_{vi} \quad \forall v \in V, i \in \pi
+\end{align*}
