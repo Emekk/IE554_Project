@@ -77,19 +77,21 @@ For the case where $|V| = 3$ and $K = 2$, the right-hand side of the inequality 
 
 \paragraph{} Following a similar rationale to the valid inequality \textsl{\eqref{eq:valid1}}, we further strengthened the formulation by introducing an upper bound on the number of vertices assigned to each partition. Specifically, for each $i \in \Pi$, the following valid inequality was added:
 \begin{equation}
-    \sum_{v \in V} x_{v,i} \leq \left\lfloor \frac{|V| - k + i}{i} \right\rfloor \quad \forall i \in P \label{eq:valid2}
+    \sum_{v \in V} x_{v,i} \leq \left\lfloor \frac{|V| - k + i}{i} \right\rfloor \quad \forall i \in \Pi \label{eq:valid2}
 \end{equation}
 
-Here, $|V|$ denotes the number of vertices, $k$ is the number of partitions, and $i$ is the index of the partition under consideration. This constraint ensures that the number of vertices assigned to the $i$-th partition does not exceed the calculated upper bound, thereby eliminating infeasible or overly large assignments in the relaxed model.
+\paragraph{} Here, $|V|$ denotes the number of vertices, $k$ is the number of partitions, and $i$ is the index of the partition under consideration. This constraint ensures that the number of vertices assigned to the $i$-th partition does not exceed the calculated upper bound, thereby eliminating infeasible or overly large assignments in the relaxed model.
 
+\paragraph{} Another valid inequality is introduced to strengthen the relationship between assignment and domination variables. The following inequality is added:
+\begin{equation}
+    d_{v,i} \geq \sum_{u \in \text{CN}(v)} x_{u,i} - \left( |\text{CN}(v)| - 1 \right) \quad \forall i \in \Pi,\ \forall v \in V
+\end{equation}
 
+\paragraph{} where $\text{CN}(v)$ denotes the closed neighborhood of vertex $v$ (i.e., $v$ and its adjacent vertices). This constraint enforces that if all or most of the neighbors of vertex $v$ are assigned to partition $i$, then $v$ must dominate partition $i$.
 
+\paragraph{} In addition to the lower bound on domination, an upper bound is also imposed to ensure consistency between assignment and domination variables. The following inequality is introduced:
+\begin{equation}
+    d_{v,i} \leq \sum_{u \in \text{CN}(v)} x_{u,i}  \quad \forall i \in \Pi,\ \forall v \in V
+\end{equation}
 
-\paragraph{} The analysis was then extended to a tree with four nodes, as illustrated in \textsl{\autoref{fig:tree4}}. For $k=2$, the solver returned the following fractional solution:
-
-\begin{figure}[h]
-    \centering
-    \input{figures/tree4.tex}
-    \caption{The tree with 4 nodes to be solved}
-    \label{fig:tree4}
-\end{figure}
+\paragraph{} This constraint ensures that vertex $v$ can only dominate partition $i$ if at least one vertex from its neighborhood is assigned to that partition. As such, it prevents domination from occurring independently of the partition's composition and strengthens the logical coherence between the $x$ and $d$ variables.

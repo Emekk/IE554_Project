@@ -9,11 +9,11 @@
 \paragraph{} For the generated graph, the Dominator Partition Problem was solved for $k = 50$ under three different configurations:
 \begin{itemize}
     \item[(i)] No valid inequalities
-    \item[(ii)] With valid inequalities \textsl{\autoref{eq:valid1}} and \textsl{\autoref{eq:valid2}} only
+    \item[(ii)] With valid inequalities \textsl{\eqref{eq:valid1}} and \textsl{\eqref{eq:valid2}} only
     \item[(iii)] With all valid inequalities
 \end{itemize}
 
-\paragraph{} The solution times (in seconds) for each case are reported in Table~\ref{tab:performance}. Additionally, we present the relative percentage improvement compared to the baseline case without valid inequalities.
+\paragraph{} The solution times (in seconds) for each case are reported in Table~\ref{tab:performance}.
 
 \begin{table}[H]
 \centering
@@ -29,5 +29,3 @@ All valid inequalities       & 651.63  & 37.81\% \\
 \end{table}
 
 \paragraph{} As seen in the results, the addition of valid inequalities significantly enhances solver performance. Incorporating just the first two inequalities reduces runtime by more than one-third. When all proposed inequalities are applied, the model achieves a total runtime reduction of approximately 38\%, demonstrating the power of carefully crafted inequalities in accelerating the solution process on large-scale instances.
-
-\paragraph{} These results highlight that, beyond theoretical tightness, valid inequalities can substantially reduce computation time in practice—a crucial consideration for solving real-world graph partitioning problems efficiently.
