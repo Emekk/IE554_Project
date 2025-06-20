@@ -4,28 +4,40 @@
 
 \paragraph{} To assess the computational effectiveness of the valid inequalities introduced in the previous section, we conducted a series of experiments on large graph instances.
 
-\paragraph{} We generated random undirected graphs with $n = 200$ nodes using an Erdős–Rényi model, where each edge is independently included with probability $p = 0.2$. We also applied a connectivity post-process to retain only connected graphs.
+\paragraph{} We generated random undirected graphs with $n = 100 \text{ and } 200$ nodes using an Erdős–Rényi model, where each edge is independently included with probability $p = 0.2$. We also applied a connectivity post-process to retain only connected graphs.
 
-\paragraph{} For the generated graph, the Dominator Partition Problem was solved for $k = 50$ under three different configurations:
+\paragraph{} For the generated graphs, the Dominator Partition Problem is solved for $k = 10$ for $n=100$ and $k = 50$ for $n=200$ under three different configurations:
 \begin{itemize}
     \item[(i)] No valid inequalities
     \item[(ii)] With valid inequalities \textsl{\eqref{eq:valid1}} and \textsl{\eqref{eq:valid2}} only
     \item[(iii)] With all valid inequalities
 \end{itemize}
 
-\paragraph{} The solution times (in seconds) for each case are reported in Table~\ref{tab:performance}.
+\paragraph{} The solution times (in seconds) for each case are reported in below tables.
+\begin{table}[H]
+\centering
+\caption{Impact of Valid Inequalities on Solver Performance ($n=100$, $p=0.2$, $k=10$)}
+\label{tab:performance1}
+\begin{tabular}{l|c|c}
+\textbf{Model Variant} & \textbf{Time (s)} & \textbf{Improvement (\%)} \\
+\hline
+No valid inequalities        & TODO & -- \\
+Valid inequalities 1 \& 2    & 680.52 & TODO\% \\
+All valid inequalities       & 651.63 & TODO\% \\
+\end{tabular}
+\end{table}
 
 \begin{table}[H]
 \centering
 \caption{Impact of Valid Inequalities on Solver Performance ($n=200$, $p=0.2$, $k=50$)}
-\label{tab:performance}
+\label{tab:performance2}
 \begin{tabular}{l|c|c}
 \textbf{Model Variant} & \textbf{Time (s)} & \textbf{Improvement (\%)} \\
 \hline
 No valid inequalities        & 1047.77 & -- \\
-Valid inequalities 1 \& 2    & 680.52  & 35.05\% \\
-All valid inequalities       & 651.63  & 37.81\% \\
+Valid inequalities 1 \& 2    & 680.52 & 35.05\% \\
+All valid inequalities       & 651.63 & 37.81\% \\
 \end{tabular}
 \end{table}
 
-\paragraph{} As seen in the results, the addition of valid inequalities significantly enhances solver performance. Incorporating just the first two inequalities reduces runtime by more than one-third. When all proposed inequalities are applied, the model achieves a total runtime reduction of approximately 38\%, demonstrating the power of carefully crafted inequalities in accelerating the solution process on large-scale instances.
+\paragraph{} As seen in the results, the addition of valid inequalities significantly enhances solver performance. Incorporating just the first two inequalities reduces runtime by more than one-third. When all proposed inequalities are applied, the model achieves a total runtime reduction of up to TODO\%, demonstrating the power of carefully crafted inequalities in accelerating the solution process on large-scale instances.

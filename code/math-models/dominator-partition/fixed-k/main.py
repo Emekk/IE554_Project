@@ -6,10 +6,10 @@ import time
 
 # parameters
 SEED = 0
-N = 200  # Number of nodes
-P = 0.4  # Probability of edge creation
+N = 100  # Number of nodes
+P = 0.2  # Probability of edge creation
 K = max(int(N - np.ceil((P * (N**2 - N) / 2))**(0.6)), int(N**(0.5)))
-K = K - (K % 10)
+K = 10
 GRAPH_NAME = f"random_graph{N}_{P}"
 SEARCH_FESAIBLE = False
 V, E = build_random_graph(N, P, seed=SEED)

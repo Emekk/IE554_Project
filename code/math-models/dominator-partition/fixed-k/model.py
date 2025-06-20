@@ -52,15 +52,15 @@ def create_and_solve_model(V, E, CN, MAXIMAL_INDEPENDENT_SETS, K, PI, SEARCH_FES
         m.addConstr(gp.quicksum(x[v, i] for v in V) >= gp.quicksum(x[v, i + 1] for v in V), name=f"Order_{i}")
 
     # VALID INEQUALITIES
-    m.addConstr(gp.quicksum(x[v, 1] for v in V) >= np.ceil(len(V)/K), name="Valid_Min_Assignment1")
-    for i in PI:
-        m.addConstr(gp.quicksum(x[v, i] for v in V) <= np.floor((len(V)-K+i)/i), name=f"Valid_Max_Assignment_{i}")
-    for v in V:
-        for i in PI:
-            m.addConstr(d[v, i] >= gp.quicksum(x[u, i] for u in CN[v]) - (len(CN[v])- 1), name=f"Valid_Dominate_{v}_{i}")
-    for v in V:
-        for i in PI:
-            m.addConstr(d[v, i] <= gp.quicksum(x[u, i] for u in CN[v]), name=f"Valid_Dominate_Upper_{v}_{i}")
+    # m.addConstr(gp.quicksum(x[v, 1] for v in V) >= np.ceil(len(V)/K), name="Valid_Min_Assignment1")
+    # for i in PI:
+    #     m.addConstr(gp.quicksum(x[v, i] for v in V) <= np.floor((len(V)-K+i)/i), name=f"Valid_Max_Assignment_{i}")
+    # for v in V:
+    #     for i in PI:
+    #         m.addConstr(d[v, i] >= gp.quicksum(x[u, i] for u in CN[v]) - (len(CN[v])- 1), name=f"Valid_Dominate_{v}_{i}")
+    # for v in V:
+    #     for i in PI:
+    #         m.addConstr(d[v, i] <= gp.quicksum(x[u, i] for u in CN[v]), name=f"Valid_Dominate_Upper_{v}_{i}")
 
     # run the model
     if SEARCH_FESAIBLE:
@@ -114,4 +114,3 @@ def display_results(m, x, d, V, E, PI, search_feasible, save_path, graph_path=No
             
     if partitioning:
         draw_graph(V, E, partitions=partitions, seed=1, save_path=graph_path)
-    m.write("model.lp")
