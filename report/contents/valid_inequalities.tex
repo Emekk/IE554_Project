@@ -82,7 +82,8 @@ For the case where $|V| = 3$ and $K = 2$, the right-hand side of the inequality 
 
 \paragraph{} Here, $|V|$ denotes the number of vertices, $k$ is the number of partitions, and $i$ is the index of the partition under consideration. This constraint ensures that the number of vertices assigned to the $i$-th partition does not exceed the calculated upper bound, thereby eliminating infeasible or overly large assignments in the relaxed model.
 
-\paragraph{} Another valid inequality is introduced to strengthen the relationship between assignment and domination variables. The following inequality is added:
+
+\paragraph{} We proceed with larger trees for the reamining part of the analysis. Another valid inequality is introduced to strengthen the relationship between assignment and domination variables. The following inequality is added:
 \begin{equation}
     d_{v,i} \geq \sum_{u \in \text{CN}(v)} x_{u,i} - \left( |\text{CN}(v)| - 1 \right) \quad \forall i \in \pi,\ \forall v \in V
 \end{equation}
