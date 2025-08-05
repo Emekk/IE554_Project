@@ -1,4 +1,4 @@
-from sample_graphs import graphs, closed_neighborhoods, build_random_graph
+from sample_graphs import *
 import numpy as np
 from model import create_and_solve_model, display_results
 import time
@@ -10,13 +10,19 @@ N = 100  # Number of nodes
 P = 0.2  # Probability of edge creation
 K = max(int(N - np.ceil((P * (N**2 - N) / 2))**(0.6)), int(N**(0.5)))
 K = 10
-GRAPH_NAME = f"random_graph{N}_{P}"
+#GRAPH_NAME = f"random_graph{N}_{P}"
+GRAPH_NAME = "tree6_path"
 SEARCH_FESAIBLE = False
-V, E = build_random_graph(N, P, seed=SEED)
+#V, E = build_random_graph(N, P, seed=SEED)
+V, E = graphs[GRAPH_NAME]
 CN = closed_neighborhoods(V, E)
-#V, E2 = distance2_graph(V, E)  # Distance-2 graph
-#MAXIMAL_INDEPENDENT_SETS = all_maximal_independent_sets(V, E2)  # all maximal independent sets
-#print(f"all_maximal_independent_sets took {time.time() - t:.2f} seconds")
+V, E2 = distance2_graph(V, E)  # Distance-2 graph
+V, E2 = build_complement_graph(V, E2)  # Complement graph
+adj = adjacency_list(V, E2)  # Adjacency list of the complement graph
+MAXIMAL_INDEPENDENT_SETS = bron_kerbosch(R=set(), P=set(V), X=set(), adj=adj)  # All maximal independent sets
+print(list(MAXIMAL_INDEPENDENT_SETS))
+exit()
+
 PI = {i for i in range(1, K+1)}  # Number of blocks (fixed)
 print(f"N={N}, P={P}, K={K}")
 

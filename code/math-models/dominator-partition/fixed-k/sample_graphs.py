@@ -16,11 +16,7 @@ def closed_neighborhoods(V, E):
 # Distance-2 graph function
 def distance2_graph(V, E):
     # Build adjacency list
-    adj = {v: set() for v in V}
-    for edge in E:
-        u, v = tuple(edge)
-        adj[u].add(v)
-        adj[v].add(u)
+    adj = adjacency_list(V, E)
 
     # Construct edges of the square graph
     E2 = set()
@@ -64,6 +60,34 @@ def all_maximal_independent_sets(V, E):
                 maximal_sets.append(S)
 
     return maximal_sets
+
+def build_complement_graph(V, E):
+    complement_edges = set()
+    for u in V:
+        for v in V:
+            if u != v and frozenset({u, v}) not in E:
+                complement_edges.add(frozenset({u, v}))
+    return V, complement_edges
+
+def adjacency_list(V, E):
+    adj_list = {v: set() for v in V}
+    for u, v in E:
+        adj_list[u].add(v)
+        adj_list[v].add(u)
+    return adj_list
+
+def bron_kerbosch(R, P, X, adj):
+    if not P and not X and len(R) > 1:
+        yield R
+    while P:
+        v = P.pop()
+        new_R = R | {v}
+        new_P = P & adj[v]
+        new_X = X & adj[v]
+        yield from bron_kerbosch(new_R, new_P, new_X, adj)
+        X.add(v)
+        if v in P:
+            P.remove(v)
 
 def build_random_graph(N, p, connected=True, seed=0):
     """
