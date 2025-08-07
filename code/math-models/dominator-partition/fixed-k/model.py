@@ -5,14 +5,15 @@ from draw_graph import draw_graph
 import os
 
 
-def create_and_solve_model(V, E, CN, MAXIMAL_INDEPENDENT_SETS, K, PI, SEARCH_FESAIBLE=False, VARIABLE_TYPE=GRB.BINARY, ALPHA=None, BETA=None):
+def create_and_solve_model(V, E, CN, MAXIMAL_INDEPENDENT_SETS, K, PI, SEARCH_FEASIBLE=False, VARIABLE_TYPE=GRB.BINARY, ALPHA=None, BETA=None):
     # model
     m = gp.Model('dominator-partition-fixed-k')
 
     # write to ssd instead of ram to prevent out of memory error
-    m.setParam('NodefileStart', 0.5)
-    m.setParam('Threads', 2)
-    m.setParam("NodefileDir", "C:\\Temp")
+    # m.setParam('NodefileStart', 0.5)
+    # m.setParam('Threads', 2)
+    # m.setParam("NodefileDir", "C:\\Temp")
+    m.setParam('LogToConsole', 0)
 
     # decision variables
     x = m.addVars(V, PI, vtype=VARIABLE_TYPE, lb=0, ub=1, name="x")  # x[v, i]
@@ -72,7 +73,7 @@ def create_and_solve_model(V, E, CN, MAXIMAL_INDEPENDENT_SETS, K, PI, SEARCH_FES
 
 
     # run the model
-    if SEARCH_FESAIBLE:
+    if SEARCH_FEASIBLE:
         m.setParam(GRB.Param.PoolSearchMode, 2)
         m.setParam(GRB.Param.PoolSolutions, 100)
     m.optimize()

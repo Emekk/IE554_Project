@@ -50,8 +50,8 @@ def adjacency_list(V, E):
     return adj_list
 
 def bron_kerbosch_pivot(R, P, X, adj):
-    if not P and not X and len(R) > 1:
-        yield R.copy()
+    if not P and not X:
+        yield R.copy() if len(R) > 1 else set()
         return
     u = max(P.union(X), key=lambda v: len(adj[v]))
     for v in list(P - adj[u]):

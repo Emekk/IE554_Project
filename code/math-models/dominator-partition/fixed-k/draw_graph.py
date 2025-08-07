@@ -37,7 +37,6 @@ def draw_graph(V, E, partitions=None, save_path=f"{script_dir}/graph.png", seed=
         nx.draw(G, pos, with_labels=True, node_color='skyblue', edge_color='gray', node_size=1000, font_size=16)
 
     plt.title("Graph Visualization")
-    plt.show()
     plt.savefig(save_path, dpi=300)
 
 
