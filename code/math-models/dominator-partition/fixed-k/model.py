@@ -52,15 +52,24 @@ def create_and_solve_model(V, E, CN, MAXIMAL_INDEPENDENT_SETS, K, PI, SEARCH_FES
         m.addConstr(gp.quicksum(x[v, i] for v in V) >= gp.quicksum(x[v, i + 1] for v in V), name=f"Order_{i}")
 
     # VALID INEQUALITIES
-    # m.addConstr(gp.quicksum(x[v, 1] for v in V) >= np.ceil(len(V)/K), name="Valid_Min_Assignment1")
-    # for i in PI:
-    #     m.addConstr(gp.quicksum(x[v, i] for v in V) <= np.floor((len(V)-K+i)/i), name=f"Valid_Max_Assignment_{i}")
-    # for v in V:
-    #     for i in PI:
-    #         m.addConstr(d[v, i] >= gp.quicksum(x[u, i] for u in CN[v]) - (len(CN[v])- 1), name=f"Valid_Dominate_{v}_{i}")
-    # for v in V:
-    #     for i in PI:
-    #         m.addConstr(d[v, i] <= gp.quicksum(x[u, i] for u in CN[v]), name=f"Valid_Dominate_Upper_{v}_{i}")
+    m.addConstr(gp.quicksum(x[v, 1] for v in V) >= np.ceil(len(V)/K), name="Valid_Min_Assignment1")
+    for i in PI:
+        m.addConstr(gp.quicksum(x[v, i] for v in V) <= np.floor((len(V)-K+i)/i), name=f"Valid_Max_Assignment_{i}")
+    for v in V:
+        for i in PI:
+            m.addConstr(d[v, i] >= gp.quicksum(x[u, i] for u in CN[v]) - (len(CN[v])- 1), name=f"Valid_Dominate_{v}_{i}")
+    for v in V:
+        for i in PI:
+            m.addConstr(d[v, i] <= gp.quicksum(x[u, i] for u in CN[v]), name=f"Valid_Dominate_Upper_{v}_{i}")
+    for MIS in MAXIMAL_INDEPENDENT_SETS:
+        for i in PI:
+            m.addConstr(gp.quicksum(d[v, i] for v in MIS) <= 1, name=f"Valid_MIS_{i}")
+    for i in PI:
+        for v in V:
+            for MIS in MAXIMAL_INDEPENDENT_SETS:
+                if v in MIS:
+                    m.addConstr(gp.quicksum(x[u, i] for u in CN[v]) <= len(CN[v]) - 1 + d[v, i] - gp.quicksum(d[y, i] for y in MIS if y != v), name=f"Valid_MIS_Cover_{v}_{i}")
+
 
     # run the model
     if SEARCH_FESAIBLE:

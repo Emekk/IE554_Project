@@ -34,33 +34,6 @@ def distance2_graph(V, E):
 
     return V, E2
 
-# Maximal independent sets function
-def all_maximal_independent_sets(V, E):
-
-    def is_independent(subset):
-        for u, v in itertools.combinations(subset, 2):
-            if frozenset({u, v}) in E:
-                return False
-        return True
-
-    maximal_sets = []
-    # Iterate over all subsets of V
-    for r in range(2, len(V) + 1):
-        for comb in itertools.combinations(V, r):
-            S = set(comb)
-            if not is_independent(S):
-                continue
-            # Check if S is maximal
-            extendable = False
-            for v in V - S:
-                if all(frozenset({v, w}) not in E for w in S):
-                    extendable = True
-                    break
-            if not extendable:
-                maximal_sets.append(S)
-
-    return maximal_sets
-
 def build_complement_graph(V, E):
     complement_edges = set()
     for u in V:
@@ -76,18 +49,24 @@ def adjacency_list(V, E):
         adj_list[v].add(u)
     return adj_list
 
-def bron_kerbosch(R, P, X, adj):
+def bron_kerbosch_pivot(R, P, X, adj):
     if not P and not X and len(R) > 1:
-        yield R
-    while P:
-        v = P.pop()
-        new_R = R | {v}
-        new_P = P & adj[v]
-        new_X = X & adj[v]
-        yield from bron_kerbosch(new_R, new_P, new_X, adj)
+        yield R.copy()
+        return
+    u = max(P.union(X), key=lambda v: len(adj[v]))
+    for v in list(P - adj[u]):
+        R_v = R.union({v})
+        P_v = P.intersection(adj[v])
+        X_v = X.intersection(adj[v])
+        yield from bron_kerbosch_pivot(R_v, P_v, X_v, adj)
+        P.remove(v)
         X.add(v)
-        if v in P:
-            P.remove(v)
+
+def get_maximal_independent_sets(V, E):
+    V, E = distance2_graph(V, E)
+    V, E = build_complement_graph(V, E)
+    adj = adjacency_list(V, E)
+    return bron_kerbosch_pivot(R=set(), P=set(V), X=set(), adj=adj)
 
 def build_random_graph(N, p, connected=True, seed=0):
     """
