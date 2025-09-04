@@ -124,3 +124,65 @@ def display_results(m, x, d, V, E, PI, search_feasible, save_path, graph_path=No
             
     if partitioning:
         draw_graph(V, E, partitions=partitions, seed=1, save_path=graph_path)
+
+def evaluate_function_at_all_solutions(m, x, d, V, PI, coef_x, coef_d):
+    min_value = np.inf
+    max_value = -np.inf
+    if m.SolCount > 0:
+        for solNum in range(m.SolCount):
+            m.setParam(GRB.Param.SolutionNumber, solNum)
+            value = sum(coef_x[v-1, i-1] * x[v, i].Xn for v in V for i in PI) + sum(coef_d[v-1, i-1] * d[v, i].Xn for v in V for i in PI)
+            if value < min_value:
+                min_value = value
+            if value > max_value:
+                max_value = value
+    return min_value, max_value
+
+
+def format_term(coefficient, var_name, row_idx, col_idx):
+    """Formats a single term of the inequality."""
+    if coefficient == 0:
+        return ""
+
+    # Using 1-based indexing for display
+    indices = f"{{{row_idx + 1},{col_idx + 1}}}"
+
+    if coefficient == 1:
+        coeff_str = ""
+    elif coefficient == -1:
+        coeff_str = "-"
+    else:
+        # Use a space for positive coefficients for alignment
+        sign = "+ " if coefficient > 0 else "- "
+        coeff_str = f"{abs(coefficient)} * "
+
+    return f"{coeff_str}{var_name}_{indices}"
+
+def display_elementwise_sum_inequality(coef_x, coef_d, operator="<=", rhs="0"):
+    """
+    Displays a single inequality formed by the element-wise product sum
+    of coefficient matrices and variable matrices.
+    """
+    all_terms = []
+
+    # Iterate through every element of the coef_x matrix
+    for (v, i), coeff in np.ndenumerate(coef_x):
+        term_str = format_term(coeff, 'x', v, i)
+        if term_str:  # Only add non-zero terms
+            all_terms.append(term_str)
+
+    # Iterate through every element of the coef_d matrix
+    for (v, i), coeff in np.ndenumerate(coef_d):
+        term_str = format_term(coeff, 'd', v, i)
+        if term_str:  # Only add non-zero terms
+            all_terms.append(term_str)
+
+    if not all_terms:
+        print(f"0 {operator} {rhs}")
+        return
+
+    # Join all the collected terms and clean up the formatting
+    expression = " + ".join(all_terms)
+    expression = expression.replace('+ -', '- ') # Makes '... + -x' into '... - x'
+
+    print(f"{expression} {operator} {rhs}")
