@@ -1,0 +1,75 @@
+\section{Valid Inequality 1}
+\begin{equation}
+    \sum_{v \in V} x_{vi} \geq \left\lceil \frac{|V|}{k} \right\rceil
+\end{equation}
+\paragraph{Explanation} This constraint requires the first block of the partition to contain at least 
+$\lceil |V|/K \rceil$ vertices. Since the vertex set $V$ is divided into exactly 
+$K$ nonempty blocks, the average block size is $|V|/K$. By the pigeonhole principle, 
+at least one block must contain at least $\lceil |V|/K \rceil$ vertices. Assigning 
+this requirement to block $1$ is valid because of the symmetry-breaking constraints 
+that enforce a nonincreasing block size order:
+\[
+\sum_{v \in V} x_{v,i} \;\geq\; \sum_{v \in V} x_{v,i+1}, \quad 
+\forall i \in \{1,\dots,K-1\}.
+\]
+ 
+Thus, block $1$ can be designated as the largest block without loss of generality. 
+This inequality preserves feasibility, strengthens the LP relaxation by ruling out 
+artificially balanced fractional solutions, and reduces solver symmetry by eliminating 
+weakly balanced partitions.
+
+\section{Valid Inequality 2}
+\begin{equation}
+    \sum_{v \in V} x_{vi} \leq \left\lfloor \frac{|V| - K + i}{i} \right\rfloor \quad \forall i \in \Pi
+\end{equation}
+\paragraph{Explanation} Let $s_j := \sum_{v\in V} x_{v,j}$ denote the size of block $j$. The model enforces
+(i) nonemptiness $s_j \ge 1$ for all $j$, (ii) a nonincreasing order
+$s_1 \ge s_2 \ge \cdots \ge s_K$, and (iii) $\sum_{j=1}^K s_j = |V|$.
+Fix $i$. Since the last $K-i$ blocks must contain at least $K-i$ vertices in total,
+the first $i$ blocks can use at most $|V|-(K-i)$ vertices:
+\[
+\sum_{j=1}^{i} s_j \;\le\; |V|-K+i.
+\]
+Under the ordering, the configuration that maximizes $s_i$ given
+$\sum_{j=1}^i s_j$ is to set $s_1=\cdots=s_i$, hence
+\[
+i\cdot s_i \;\le\; |V|-K+i
+\quad\Longrightarrow\quad
+s_i \;\le\; \frac{|V|-K+i}{i}.
+\]
+Integrality of $s_i$ yields
+\[
+s_i \;\le\; \Big\lfloor \frac{|V|-K+i}{i} \Big\rfloor,
+\]
+which matches the proposed inequality.
+ 
+\paragraph{Tightness and Special Cases.}
+The bound is tight, e.g., when $s_1=\cdots=s_i=\big\lfloor \frac{|V|-K+i}{i} \big\rfloor$
+and $s_{i+1}=\cdots=s_K=1$ (whenever the sum equals $|V|$). For $i=1$ it reduces to
+$s_1 \le \lfloor |V|-K+1 \rfloor$, and for $i=K$ it gives
+$s_K \le \lfloor |V|/K \rfloor$, consistent with the interpretation that the smallest
+block cannot exceed the average size.
+
+\section{Valid Inequality 3}
+\begin{equation}
+    d_{vi} \geq \sum_{u \in CN(v)} x_{u,i} - |CN(v)| + 1 \quad \forall v \in V,\, \forall i \in \Pi
+\end{equation}
+\paragraph{Explanation}
+
+\section{Valid Inequality 4}
+\begin{equation}
+    d_{vi} \leq \sum_{u \in CN(v)} x_{ui} \quad \forall v \in V,\, \forall i \in \Pi
+\end{equation}
+\paragraph{Explanation}
+
+\section{Valid Inequality 5}
+\begin{equation}
+    \sum_{v \in S} d_{vi} \leq 1 \quad \forall S \in \mathcal{I},\; \forall i \in \Pi
+\end{equation}
+\paragraph{Explanation}
+
+\section{Valid Inequality 6}
+\begin{equation}
+    \sum_{u \in CN(v)} x_{ui} \leq |CN(v)| - 1 + d_{vi} - \sum_{\substack{y \in S \\ y \neq v}} d_{yi} \quad \forall v \in V,\; \forall S \in \mathcal{I} \text{ with } v \in S,\; \forall i \in \Pi
+\end{equation}
+\paragraph{Explanation}

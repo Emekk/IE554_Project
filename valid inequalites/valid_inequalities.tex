@@ -22,7 +22,7 @@
 %\usetikzlibrary{shapes.geometric, shapes.multipart, arrows, positioning, arrows.meta}
 \usepackage[bottom]{footmisc}  % fix footnotes at the bottom of the page
 \usepackage{hyperref}
-\usepackage[a4paper, margin=1.5cm]{geometry}
+\usepackage[a4paper, margin=2cm]{geometry}
 %\usepackage[toc, section=section]{glossaries}
 \usepackage[all]{hypcap}  % needed to help hyperlinks direct correctly
 
@@ -37,24 +37,12 @@
 \renewcommand{\ttdefault}{cmvtt}
 
 % table of contents
-\renewcommand\contentsname{CONTENTS}
-\setcounter{tocdepth}{3}
+%\renewcommand\contentsname{TABLE OF CONTENTS}
+%\setcounter{tocdepth}{3}
 
-% custom section commands
-%\newcommand\subsectiontoc[1]{
-%    \subsection*{\underline{#1}}
-%    \addcontentsline{toc}{subsection}{#1}
-%    \markboth{#1}{#1}}
-%\newcommand\subsubsectiontoc[1]{
-%    \subsubsection*{\underline{#1}}
-%    \addcontentsline{toc}{subsubsection}{#1}
-%    \markboth{#1}{#1}}
-
-% letter subsections
-%\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
 
 % line spacing
-\setstretch{1.5}
+\onehalfspacing
 \renewcommand{\arraystretch}{1.5} % table row spacing
 
 % footnote
@@ -63,37 +51,23 @@
 \makeatletter
 \renewcommand\@makefntext[1]{\noindent\makebox[12pt][r]{\@thefnmark. }#1}
 
-% glossary
-%\input{glossary/glossary.tex}
-
-% tikz styles
-%\tikzstyle{startstop} = [rectangle, rounded corners=4mm, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=white]
-%\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=white]
-%\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=white]
-%\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, aspect=1.75, text centered, draw=black, fill=white]
-%\tikzstyle{arrow} = [thick, ->, >=latex]
-
 
 \begin{document}
 
 \begin{tcolorbox}[colback=white, bottomrule=1mm, sharp corners]
-    2024-2025 Spring
     \begin{center}
         \Large
-        \textbf{IE 554 Project -- Mathematical Models}
+        \textbf{Valid Inequalities and Explanations}
         \\[4mm]
         \normalsize
-        \hfill \textsl{Emek Irmak \& Ömer Turan Şahinaslan}
     \end{center}
 \end{tcolorbox}
-
 \pagenumbering{gobble}
 \tableofcontents
 \clearpage
 \pagenumbering{arabic}
 
-\input{contents/dominator_partition_varaible_k.tex}
-\clearpage
-\input{contents/dominator_partition_fixed_k.tex}
+\input{body.tex}
+
 
 \end{document}

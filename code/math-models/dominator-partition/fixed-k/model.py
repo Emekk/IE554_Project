@@ -13,7 +13,7 @@ def create_and_solve_model(V, E, CN, MAXIMAL_INDEPENDENT_SETS, K, PI, SEARCH_FEA
     # m.setParam('NodefileStart', 0.5)
     # m.setParam('Threads', 2)
     # m.setParam("NodefileDir", "C:\\Temp")
-    m.setParam('LogToConsole', 0)
+    m.setParam('OutputFlag', 0)
 
     # decision variables
     x = m.addVars(V, PI, vtype=VARIABLE_TYPE, lb=0, ub=1, name="x")  # x[v, i]
@@ -70,7 +70,6 @@ def create_and_solve_model(V, E, CN, MAXIMAL_INDEPENDENT_SETS, K, PI, SEARCH_FEA
             for MIS in MAXIMAL_INDEPENDENT_SETS:
                 if v in MIS:
                     m.addConstr(gp.quicksum(x[u, i] for u in CN[v]) <= len(CN[v]) - 1 + d[v, i] - gp.quicksum(d[y, i] for y in MIS if y != v), name=f"Valid_MIS_Cover_{v}_{i}")
-
 
     # run the model
     if SEARCH_FEASIBLE:
@@ -178,11 +177,10 @@ def display_elementwise_sum_inequality(coef_x, coef_d, operator="<=", rhs="0"):
             all_terms.append(term_str)
 
     if not all_terms:
-        print(f"0 {operator} {rhs}")
-        return
+        return f"0 {operator} {rhs}"
 
     # Join all the collected terms and clean up the formatting
     expression = " + ".join(all_terms)
     expression = expression.replace('+ -', '- ') # Makes '... + -x' into '... - x'
 
-    print(f"{expression} {operator} {rhs}")
+    return f"{expression} {operator} {rhs}"
