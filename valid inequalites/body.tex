@@ -17,6 +17,7 @@ Thus, block $1$ can be designated as the largest block without loss of generalit
 This inequality preserves feasibility, strengthens the LP relaxation by ruling out 
 artificially balanced fractional solutions, and reduces solver symmetry by eliminating 
 weakly balanced partitions.
+% -----------------------------------------------------------------
 
 \section{Valid Inequality 2}
 \begin{equation}
@@ -49,27 +50,131 @@ and $s_{i+1}=\cdots=s_K=1$ (whenever the sum equals $|V|$). For $i=1$ it reduces
 $s_1 \le \lfloor |V|-K+1 \rfloor$, and for $i=K$ it gives
 $s_K \le \lfloor |V|/K \rfloor$, consistent with the interpretation that the smallest
 block cannot exceed the average size.
+% -----------------------------------------------------------------
 
 \section{Valid Inequality 3}
 \begin{equation}
     d_{vi} \geq \sum_{u \in CN(v)} x_{u,i} - |CN(v)| + 1 \quad \forall v \in V,\, \forall i \in \Pi
 \end{equation}
-\paragraph{Explanation}
+\paragraph{Explanation} This inequality links the domination variable $d_{v,i}$ with the assignment of $v$’s neighbors to block $i$. Its logic is as follows:
+ 
+\begin{itemize}
+
+    \item If \textbf{all neighbors of $v$} are assigned to block $i$, then
+    \[
+    \sum_{u \in CN(v)} x_{u,i} = |CN(v)|,
+    \]
+    and the right-hand side equals $1$. Hence, the constraint enforces $d_{v,i} \ge 1$, which forces $d_{v,i} = 1$. That is, vertex $v$ must dominate block $i$.
+ 
+    \item If at least one neighbor of $v$ is not in block $i$, then
+
+    \[
+    \sum_{u \in CN(v)} x_{u,i} \le |CN(v)|-1,
+    \]
+
+    and the right-hand side is nonpositive. Since $d_{v,i} \ge 0$, the inequality becomes redundant and places no restriction.
+
+\end{itemize}
+ 
+\paragraph{} Thus, the inequality ensures that \textbf{whenever block $i$ consists entirely of neighbors of $v$}, the model must recognize this by setting $d_{v,i}=1$. In other words, it eliminates the possibility that a vertex is ``silently'' dominating a block without the variable $d_{v,i}$ reflecting it.
+% -----------------------------------------------------------------
 
 \section{Valid Inequality 4}
 \begin{equation}
     d_{vi} \leq \sum_{u \in CN(v)} x_{ui} \quad \forall v \in V,\, \forall i \in \Pi
 \end{equation}
-\paragraph{Explanation}
+\paragraph{Explanation} This inequality ensures that vertex $v$ can only be declared as a dominator of block $i$ if at least one of its neighbors is assigned to block $i$. In other words, domination is not allowed in a vacuum: the variable $d_{v,i}$ cannot take the value $1$ unless there is some vertex in block $i$ that $v$ is actually adjacent to.  
+ 
+\begin{itemize}
+
+    \item If no neighbor of $v$ lies in block $i$, then the right-hand side equals $0$, and the constraint enforces $d_{v,i}=0$.
+
+    \item If one or more neighbors of $v$ belong to block $i$, then the inequality permits $d_{v,i}$ to be $1$, but does not require it.
+
+\end{itemize}
+ 
+Thus, this constraint acts as a \textbf{logical upper bound}: it rules out false positives where a vertex is labeled as a dominator of a block that contains none of its neighbors.
+ 
+% -----------------------------------------------------------------
 
 \section{Valid Inequality 5}
 \begin{equation}
     \sum_{v \in S} d_{vi} \leq 1 \quad \forall S \in \mathcal{I},\; \forall i \in \Pi
 \end{equation}
-\paragraph{Explanation}
+\paragraph{Explanation} This inequality leverages structural information from the squared graph $G^2$, in which two vertices are adjacent if their distance in the original graph $G$ is at most two. By construction, a maximal independent set in $G^2$ consists of vertices that are pairwise at distance at least three in $G$. Such vertices cannot jointly dominate the same block, because domination requires adjacency relationships that are incompatible with this distance condition.  
+ 
+Therefore, the inequality enforces that \textbf{at most one vertex from any maximal independent set of $G^2$ can dominate a given block}.  
+ 
+\begin{itemize}
+    \item If two or more vertices from the same independent set $S$ were both chosen as dominators of the same block, then the block would need to simultaneously be contained within the neighborhoods of these vertices. But since their neighborhoods are too far apart in $G$, this is impossible.
+    \item The inequality thus cuts off such infeasible configurations at the linear relaxation level, strengthening the formulation without excluding any valid dominator partition.
+\end{itemize}
+ 
+This family of inequalities integrates higher-order graph structure into the model and systematically restricts domination assignments that are combinatorially impossible.
+% -----------------------------------------------------------------
 
 \section{Valid Inequality 6}
 \begin{equation}
     \sum_{u \in CN(v)} x_{ui} \leq |CN(v)| - 1 + d_{vi} - \sum_{\substack{y \in S \\ y \neq v}} d_{yi} \quad \forall v \in V,\; \forall S \in \mathcal{I} \text{ with } v \in S,\; \forall i \in \Pi
 \end{equation}
-\paragraph{Explanation}
+\paragraph{Explanation} This inequality couples the ``all--neighbors--in--the--block'' trigger for $v$ with the exclusivity requirement induced by the maximal independent set $\mathrm{MIS}$ in $G^2$. Specifically:
+ 
+\begin{itemize}
+    \item If \textbf{all neighbors of $v$} lie in block $i$, then $\sum_{u \in CN(v)} x_{u,i} = |CN(v)|$, and the inequality becomes
+    \[
+    |CN(v)| \;\le\; |CN(v)| - 1 + d_{v,i} - \sum_{y \in \mathrm{MIS}\setminus\{v\}} d_{y,i},
+    \]
+    which simplifies to
+    \[
+    1 \;\le\; d_{v,i} - \sum_{y \in \mathrm{MIS}\setminus\{v\}} d_{y,i}.
+    \]
+    Hence, $d_{v,i}$ must be $1$ and \textbf{all other} $d_{y,i}$ with $y \in \mathrm{MIS}\setminus\{v\}$ must be $0$. In words: when block $i$ is entirely within $N(v)$, vertex $v$ is forced to be the \textbf{unique} dominator from $\mathrm{MIS}$ for that block.
+ 
+    \item If \textbf{not all neighbors of $v$} are in block $i$, then $\sum_{u \in CN(v)} x_{u,i} \le |CN(v)|-1$, so the left-hand side is at most $|CN(v)|-1$, and the inequality becomes nonbinding: it does not force any particular value of $d_{v,i}$ (nor of the other $d_{y,i}$).
+\end{itemize}
+ 
+Thus, the constraint acts as a \textbf{cover-type coupling inequality}: it activates only in the event that block $i$ is fully contained in $N(v)$, and in that case it both (i) forces $v$ to dominate block $i$ and (ii) enforces \textbf{exclusivity} among the dominators drawn from the same maximal independent set of $G^2$.
+% -----------------------------------------------------------------
+
+\section*{Clarification of (Non)Binding Behavior}
+
+Let
+\[
+S:=\sum_{u\in CN(v)} x_{u,i},\qquad \delta:=|CN(v)|-1-S\;\;(\ge 0),
+\]
+and consider the inequality
+\[
+\sum_{u \in CN(v)} x_{u,i} \;\le\; |CN(v)| - 1 + d_{v,i} - \sum_{\substack{y \in \mathrm{MIS}\\ y \neq v}} d_{y,i}.
+\]
+Rearranging gives
+\[
+S - (|CN(v)|-1) \;\le\; d_{v,i} - \sum_{y\in \mathrm{MIS}\setminus\{v\}} d_{y,i}
+\quad\Longleftrightarrow\quad
+\sum_{y\in \mathrm{MIS}\setminus\{v\}} d_{y,i} - d_{v,i} \;\le\; \delta.
+\]
+
+Under the separate MIS constraint $\sum_{y\in \mathrm{MIS}} d_{y,i}\le 1$, the left-hand side satisfies
+\[
+\max\bigl\{\sum_{y\ne v} d_{y,i} - d_{v,i}\bigr\} =
+\begin{cases}
+1 & \text{if } d_{v,i}=0 \text{ and some } y\ne v \text{ has } d_{y,i}=1,\\
+-1 & \text{if } d_{v,i}=1 \text{ (then others must be }0).
+\end{cases}
+\]
+
+\begin{itemize}
+    \item \textbf{If at least two neighbors are missing from block $i$}, i.e. $S\le |CN(v)|-2$ so $\delta\ge 1$, then the inequality is \textbf{automatically satisfied} (nonbinding) given the MIS cap, because the left-hand side is at most $1$.
+    \item \textbf{If exactly one neighbor is missing}, i.e. $S=|CN(v)|-1$ so $\delta=0$, the inequality becomes
+    \[
+    \sum_{y\ne v} d_{y,i} \;\le\; d_{v,i}.
+    \]
+    With the MIS cap $\sum_{y\in \mathrm{MIS}} d_{y,i}\le 1$, this forbids ``another'' MIS vertex from dominating unless $v$ itself dominates (and even then MIS $\le 1$ forces others to be $0$ if $d_{v,i}=1$). Thus, \textbf{the constraint is binding in the borderline case} $S=|CN(v)|-1$: it can restrict the $d$-variables even though not all neighbors are present.
+    \item \textbf{If all neighbors are present}, $S=|CN(v)|$ so $\delta=-1$, and the inequality forces $d_{v,i}=1$ and all other MIS members to be $0$ (as discussed earlier).
+\end{itemize}
+
+So the accurate statement is:
+\begin{itemize}
+    \item Nonbinding when $S \le |CN(v)|-2$ (given $\sum_{y\in \mathrm{MIS}} d_{y,i}\le 1$).
+    \item Potentially binding when $S=|CN(v)|-1$.
+    \item Strongly binding (forcing) when $S=|CN(v)|$.
+\end{itemize}
