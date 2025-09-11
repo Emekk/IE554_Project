@@ -134,3 +134,17 @@ This family of inequalities integrates higher-order graph structure into the mod
 \end{itemize}
  
 Thus, the constraint acts as a \textbf{cover-type coupling inequality}: it activates only in the event that block $i$ is fully contained in $N(v)$, and in that case it both (i) forces $v$ to dominate block $i$ and (ii) enforces \textbf{exclusivity} among the dominators drawn from the same maximal independent set of $G^2$.
+
+% -----------------------------------------------------------------
+
+\section{Valid Inequality 7}
+
+\paragraph{Block size bounded by dominators' degrees (UnionCap).}
+For all $i\in\Pi$,
+\[
+\sum_{u\in V} x_{u,i}
+\;\le\;
+|V|\Bigl(1-\sum_{v\in V} d_{v,i}\Bigr)
+\;+\;
+\sum_{v\in V} \bigl(1+|N(v)|\bigr)\, d_{v,i}.
+\]

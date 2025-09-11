@@ -2,17 +2,18 @@ from sample_graphs import *
 import numpy as np
 from model import create_and_solve_model, display_results, evaluate_function_at_all_solutions, display_elementwise_sum_inequality
 from gurobipy import GRB
+import itertools
 import time
 import os
 
 
 # parameters
-fractional_seed = 0
-N = 5  # Number of nodes
+fractional_seed = 1265 - 1
+N = 4  # Number of nodes
 SHAPE = "path"  # Shape of the tree: "path", "star", "fork"...
 #P = 0.2  # Probability of edge creation
 #K = max(int(N - np.ceil((P * (N**2 - N) / 2))**(0.6)), int(N**(0.5)))
-K = 4
+K = 3
 #GRAPH_NAME = f"random_graph{N}_{P}"
 GRAPH_NAME = f"tree{N}_{SHAPE}"
 #V, E = build_random_graph(N, P, seed=SEED)
@@ -44,7 +45,7 @@ display_results(m_integer, x_integer, d_integer, V, E, PI, True, save_path=f"sol
 # Search for fractional solutions and corresponding valid inequalities recursively
 found_fractional_solutions = 0
 fractional_solution_start_time = time.time()
-while (found_fractional_solutions < 10) and (time.time() - fractional_solution_start_time < 150):
+while (found_fractional_solutions < 1) and (time.time() - fractional_solution_start_time < 150):
     is_integral = True
     is_feasible = True
     while is_integral: 
@@ -84,18 +85,36 @@ while (found_fractional_solutions < 10) and (time.time() - fractional_solution_s
         integer_seed = 0
         found_valid_inequalities = 0
         valid_inequality_start_time = time.time()
-        while (found_valid_inequalities < 20) and (time.time() - valid_inequality_start_time < 200):
+        # temp change start
+        n = 2 * len(V) * len(PI)
+        num_zeros = 8
+        coef_xs = []
+        coef_ds = []
+        for k in range(1, num_zeros + 1):
+            for combo in itertools.combinations(range(n), k):
+                row = np.random.choice(a=[-1, 1], size=n)
+                row[list(combo)] = 0
+                coef_x = row[:n//2].reshape((len(V), len(PI)))
+                coef_d = row[n//2:].reshape((len(V), len(PI)))
+                coef_xs.append(coef_x)
+                coef_ds.append(coef_d)
+        # temp change end
+        while (found_valid_inequalities < 100) and (time.time() - valid_inequality_start_time < 600):
             integer_seed += 1
             np.random.seed(integer_seed)
-            coef_x = np.random.choice(a=[-1, 0, 1], size=(len(V), len(PI)))
-            coef_d = np.random.choice(a=[-1, 0, 1], size=(len(V), len(PI)))
+            # coef_x = np.random.choice(a=[-1, 0, 1], size=(len(V), len(PI)))
+            # coef_d = np.random.choice(a=[-1, 0, 1], size=(len(V), len(PI)))
+            # temp change start
+            coef_x = coef_xs[integer_seed]
+            coef_d = coef_ds[integer_seed]
+            # temp change end
             min_value, max_value = evaluate_function_at_all_solutions(m_integer, x_integer, d_integer, V, PI, coef_x=coef_x, coef_d=coef_d)
             value_fractional_solution = sum(coef_x[v-1, i-1] * x[v, i].X for v in V for i in PI) + sum(coef_d[v-1, i-1] * d[v, i].X for v in V for i in PI)
             if value_fractional_solution < min_value or value_fractional_solution > max_value:
                 found_valid_inequalities += 1
                 print(f"Found valid inequality #{found_valid_inequalities} with seed {integer_seed}")
                 print(f"Min: {min_value}; Max: {max_value}; Fractional: {value_fractional_solution}")
-                
+
                 # save the valid inequality to a file
                 operator = ">=" if value_fractional_solution < min_value else "<="
                 rhs = min_value if value_fractional_solution < min_value else max_value
