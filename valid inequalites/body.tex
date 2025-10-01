@@ -137,7 +137,7 @@ Thus, the constraint acts as a \textbf{cover-type coupling inequality}: it activ
 
 % -----------------------------------------------------------------
 
-\section{Valid Inequality 7 (fractional seed = 1265)}  
+\section{Valid Inequality 7}  
 \begin{equation}
     \sum_{v \in V \setminus \{u,w\}} x_{vi} \geq d_{u1} \quad \text{ s.t. u is pendant}, (u,w) \in E, i \in \{\Pi \setminus \{1\}\}
 \end{equation}
@@ -158,3 +158,16 @@ Thus, the constraint acts as a \textbf{cover-type coupling inequality}: it activ
 \begin{itemize}
     \item If the average block size $\frac{n}{k}$ exceeds $\text{deg}(u) + 1$, then it is impossible for vertex $u$ to dominate block $1$. This is because $u$ can only dominate a block of size at most $\text{deg}(u) + 1$ (itself plus its neighbors). Since the first block is the largest block due to the ordering constraints, it must be at least of size $\lceil \frac{n}{k} \rceil$.
 \end{itemize}
+
+\paragraph{fractional\_seed=1265}
+\[
+\begin{array}{cccccccc}
+\textbf{x variables:} \\
+x_{11} = 0.5 & x_{21} = 0.5 & x_{31} = 0.5 & x_{41} = 0.5
+x_{32} = 0.5 & x_{42} = 0.5 & x_{13} = 0.5 & x_{23} = 0.5
+\\
+\textbf{d variables:} \\
+d_{11} = 0.5 & d_{13} = 0.5 & d_{21} = 0.5 & d_{22} = 0.5
+d_{31} = 0.5 & d_{33} = 0.5 & d_{41} = 0.5 & d_{42} = 0.5
+\end{array}
+\]
