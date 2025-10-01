@@ -1,0 +1,167 @@
+x[1, 1] = 1.0
+x[3, 1] = 0.5
+x[4, 1] = 0.5
+x[2, 2] = 1.0
+x[3, 2] = 0.5
+x[5, 2] = 0.5
+x[4, 3] = 0.5
+x[5, 3] = 0.49999999999999994
+---
+d[1, 1] = 0.5
+d[1, 2] = 0.5
+d[2, 1] = 0.5
+d[2, 2] = 0.5
+d[3, 2] = 0.5
+d[3, 3] = 0.5
+d[4, 3] = 1.0
+d[5, 3] = 1.0
+
+Valid inequality of integer_seed=148:
+	x_{2,2} + x_{5,2} <= 1.0
+
+Valid inequality of integer_seed=150:
+	x_{2,2} + d_{1,1} <= 1.0
+
+Valid inequality of integer_seed=153:
+	x_{2,2} + d_{2,1} <= 1.0
+
+Valid inequality of integer_seed=548:
+	x_{1,1} + x_{2,2} + x_{3,2} <= 2.0
+
+Valid inequality of integer_seed=554:
+	x_{1,1} + x_{2,2} + x_{5,2} <= 2.0
+
+Valid inequality of integer_seed=556:
+	x_{1,1} + x_{2,2} + d_{1,1} <= 2.0
+
+Valid inequality of integer_seed=559:
+	x_{1,1} + x_{2,2} + d_{2,1} <= 2.0
+
+Valid inequality of integer_seed=1654:
+	x_{2,1} + x_{3,1} + x_{5,1} >= 1.0
+
+Valid inequality of integer_seed=1669:
+	x_{2,1} + x_{3,1} + d_{5,1} >= 1.0
+
+Valid inequality of integer_seed=1834:
+	x_{2,1} + d_{1,2} + d_{1,3} >= 1.0
+
+Valid inequality of integer_seed=1934:
+	x_{2,2} + x_{2,3} + d_{1,1} <= 1.0
+
+Valid inequality of integer_seed=1990:
+	x_{2,2} + x_{3,2} + d_{4,3} <= 2.0
+
+Valid inequality of integer_seed=1993:
+	x_{2,2} + x_{3,2} + d_{5,3} <= 2.0
+
+Valid inequality of integer_seed=2101:
+	x_{2,2} + x_{5,2} + d_{4,3} <= 2.0
+
+Valid inequality of integer_seed=2104:
+	x_{2,2} + x_{5,2} + d_{5,3} <= 2.0
+
+Valid inequality of integer_seed=2130:
+	x_{2,2} + d_{1,1} + d_{4,3} <= 2.0
+
+Valid inequality of integer_seed=2133:
+	x_{2,2} + d_{1,1} + d_{5,3} <= 2.0
+
+Valid inequality of integer_seed=2166:
+	x_{2,2} + d_{2,1} + d_{4,3} <= 2.0
+
+Valid inequality of integer_seed=2169:
+	x_{2,2} + d_{2,1} + d_{5,3} <= 2.0
+
+Valid inequality of integer_seed=4580:
+	x_{1,1} + x_{1,2} + x_{2,2} + x_{3,2} <= 2.0
+
+Valid inequality of integer_seed=4586:
+	x_{1,1} + x_{1,2} + x_{2,2} + x_{5,2} <= 2.0
+
+Valid inequality of integer_seed=4588:
+	x_{1,1} + x_{1,2} + x_{2,2} + d_{1,1} <= 2.0
+
+Valid inequality of integer_seed=4591:
+	x_{1,1} + x_{1,2} + x_{2,2} + d_{2,1} <= 2.0
+
+Valid inequality of integer_seed=4937:
+	x_{1,1} + x_{1,3} + x_{2,2} + x_{5,2} <= 2.0
+
+Valid inequality of integer_seed=4939:
+	x_{1,1} + x_{1,3} + x_{2,2} + d_{1,1} <= 2.0
+
+Valid inequality of integer_seed=4942:
+	x_{1,1} + x_{1,3} + x_{2,2} + d_{2,1} <= 2.0
+
+Valid inequality of integer_seed=5580:
+	x_{1,1} + x_{2,2} + x_{2,3} + x_{3,2} <= 2.0
+
+Valid inequality of integer_seed=5588:
+	x_{1,1} + x_{2,2} + x_{2,3} + d_{1,1} <= 2.0
+
+Valid inequality of integer_seed=5626:
+	x_{1,1} + x_{2,2} + x_{3,2} + x_{3,3} <= 2.0
+
+Valid inequality of integer_seed=5639:
+	x_{1,1} + x_{2,2} + x_{3,2} + d_{3,1} <= 2.0
+
+Valid inequality of integer_seed=5644:
+	x_{1,1} + x_{2,2} + x_{3,2} + d_{4,3} <= 3.0
+
+Valid inequality of integer_seed=5646:
+	x_{1,1} + x_{2,2} + x_{3,2} + d_{5,2} <= 2.0
+
+Valid inequality of integer_seed=5647:
+	x_{1,1} + x_{2,2} + x_{3,2} + d_{5,3} <= 3.0
+
+Valid inequality of integer_seed=5750:
+	x_{1,1} + x_{2,2} + x_{5,2} + d_{3,1} <= 2.0
+
+Valid inequality of integer_seed=5753:
+	x_{1,1} + x_{2,2} + x_{5,2} + d_{4,1} <= 2.0
+
+Valid inequality of integer_seed=5755:
+	x_{1,1} + x_{2,2} + x_{5,2} + d_{4,3} <= 3.0
+
+Valid inequality of integer_seed=5756:
+	x_{1,1} + x_{2,2} + x_{5,2} + d_{5,1} <= 2.0
+
+Valid inequality of integer_seed=5758:
+	x_{1,1} + x_{2,2} + x_{5,2} + d_{5,3} <= 3.0
+
+Valid inequality of integer_seed=5775:
+	x_{1,1} + x_{2,2} + d_{1,1} + d_{1,3} <= 2.0
+
+Valid inequality of integer_seed=5779:
+	x_{1,1} + x_{2,2} + d_{1,1} + d_{3,1} <= 2.0
+
+Valid inequality of integer_seed=5782:
+	x_{1,1} + x_{2,2} + d_{1,1} + d_{4,1} <= 2.0
+
+Valid inequality of integer_seed=5784:
+	x_{1,1} + x_{2,2} + d_{1,1} + d_{4,3} <= 3.0
+
+Valid inequality of integer_seed=5785:
+	x_{1,1} + x_{2,2} + d_{1,1} + d_{5,1} <= 2.0
+
+Valid inequality of integer_seed=5787:
+	x_{1,1} + x_{2,2} + d_{1,1} + d_{5,3} <= 3.0
+
+Valid inequality of integer_seed=5814:
+	x_{1,1} + x_{2,2} + d_{2,1} + d_{2,3} <= 2.0
+
+Valid inequality of integer_seed=5815:
+	x_{1,1} + x_{2,2} + d_{2,1} + d_{3,1} <= 2.0
+
+Valid inequality of integer_seed=5818:
+	x_{1,1} + x_{2,2} + d_{2,1} + d_{4,1} <= 2.0
+
+Valid inequality of integer_seed=5820:
+	x_{1,1} + x_{2,2} + d_{2,1} + d_{4,3} <= 3.0
+
+Valid inequality of integer_seed=5821:
+	x_{1,1} + x_{2,2} + d_{2,1} + d_{5,1} <= 2.0
+
+Valid inequality of integer_seed=5823:
+	x_{1,1} + x_{2,2} + d_{2,1} + d_{5,3} <= 3.0

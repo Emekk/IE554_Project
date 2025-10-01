@@ -11,7 +11,7 @@ import os
 # parameters
 fractional_seed = 0
 N = 4  # Number of nodes
-SHAPE = "path"  # Shape of the tree: "path", "star", "fork"...
+SHAPE = "star"  # Shape of the tree: "path", "star", "fork"...
 #P = 0.2  # Probability of edge creation
 #K = max(int(N - np.ceil((P * (N**2 - N) / 2))**(0.6)), int(N**(0.5)))
 K = 3
@@ -75,7 +75,10 @@ while (found_fractional_solutions < 10) and (time.time() - fractional_solution_s
             break
 
         # check if the solution is integral
-        is_integral = all(x[v, i].X.is_integer() and d[v, i].X.is_integer() for v in V for i in PI)
+        is_integral = all(
+            round(x[v, i].X, 4).is_integer() and round(d[v, i].X, 4).is_integer()
+            for v in V for i in PI
+        )
 
     if is_feasible and not is_integral:
         found_fractional_solutions += 1
@@ -88,13 +91,13 @@ while (found_fractional_solutions < 10) and (time.time() - fractional_solution_s
         valid_inequality_start_time = time.time()
         # temp change start
         n = 2 * len(V) * len(PI)
-        num_replacements = 12
+        num_replacements = 8
         coef_xs = []
         coef_ds = []
         for k in range(1, num_replacements + 1):
             for combo in itertools.combinations(range(n), k):
-                row = np.random.choice(a=[-1, 1], size=n)
-                row[list(combo)] = 0
+                row = np.zeros(n)
+                row[list(combo)] = 1
                 coef_x = row[:n//2].reshape((len(V), len(PI)))
                 coef_d = row[n//2:].reshape((len(V), len(PI)))
                 coef_xs.append(coef_x)
@@ -112,8 +115,8 @@ while (found_fractional_solutions < 10) and (time.time() - fractional_solution_s
             # temp change end
             min_value, max_value = evaluate_function_at_all_solutions(m_integer, x_integer, d_integer, V, PI, coef_x=coef_x, coef_d=coef_d)
             value_fractional_solution = sum(coef_x[v-1, i-1] * x[v, i].X for v in V for i in PI) + sum(coef_d[v-1, i-1] * d[v, i].X for v in V for i in PI)
-            if (not math.isclose(value_fractional_solution, min_value, abs_tol=1e-3) and value_fractional_solution < min_value) or\
-                (not math.isclose(value_fractional_solution, max_value, abs_tol=1e-3) and value_fractional_solution > max_value):
+            if (not math.isclose(value_fractional_solution, min_value, abs_tol=1e-4) and value_fractional_solution < min_value) or\
+                (not math.isclose(value_fractional_solution, max_value, abs_tol=1e-4) and value_fractional_solution > max_value):
                 found_valid_inequalities += 1
                 print(f"Found valid inequality #{found_valid_inequalities} with seed {integer_seed}")
                 print(f"Min: {min_value}; Max: {max_value}; Fractional: {value_fractional_solution}")
