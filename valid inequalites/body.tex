@@ -137,14 +137,24 @@ Thus, the constraint acts as a \textbf{cover-type coupling inequality}: it activ
 
 % -----------------------------------------------------------------
 
-\section{Valid Inequality 7}
+\section{Valid Inequality 7 (fractional seed = 1265)}  
+\begin{equation}
+    \sum_{v \in V \setminus \{u,w\}} x_{vi} \geq d_{u1} \quad \text{ s.t. u is pendant}, (u,w) \in E, i \in \{\Pi \setminus \{1\}\}
+\end{equation}
 
-\paragraph{Block size bounded by dominators' degrees (UnionCap).}
-For all $i\in\Pi$,
-\[
-\sum_{u\in V} x_{u,i}
-\;\le\;
-|V|\Bigl(1-\sum_{v\in V} d_{v,i}\Bigr)
-\;+\;
-\sum_{v\in V} \bigl(1+|N(v)|\bigr)\, d_{v,i}.
-\]
+\paragraph{Explanation} This inequality exploits the special structure of pendant vertices to tighten the formulation. A pendant vertex $u$ has exactly one neighbor $w$. The logic is as follows:
+\begin{itemize}
+    \item If $d_{u,1} = 1$, then vertex $u$ is chosen to dominate block $1$. Since $u$ can only dominate vertices in its neighborhood, and its only neighbor is $w$, it follows that block $1$ must contain vertex $w$. Therefore, no other vertex except $w$ can be in block $1$, as that would violate the domination condition. The inequality then enforces that all other vertices (i.e., all vertices in $V \setminus \{u,w\}$) must be assigned to blocks other than block $1$.
+    
+    \item If $d_{u,1} = 0$, then the inequality becomes non-restrictive, as the right-hand side is zero. In this case, there is no requirement on the assignment of other vertices.
+\end{itemize}
+
+\subsection{Potential Valid Inequality}
+\begin{equation}
+    d_{u1} = 0 \impliedby \frac{n}{k} > \text{deg}(u) + 1
+\end{equation}
+
+\paragraph{Explanation} This potential inequality leverages the relationship between the average block size and the degree of a vertex $u$. The logic is as follows:
+\begin{itemize}
+    \item If the average block size $\frac{n}{k}$ exceeds $\text{deg}(u) + 1$, then it is impossible for vertex $u$ to dominate block $1$. This is because $u$ can only dominate a block of size at most $\text{deg}(u) + 1$ (itself plus its neighbors). Since the first block is the largest block due to the ordering constraints, it must be at least of size $\lceil \frac{n}{k} \rceil$.
+\end{itemize}
