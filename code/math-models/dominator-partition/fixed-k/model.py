@@ -106,9 +106,20 @@ def create_and_solve_model(
                     gp.quicksum(x[v, i] for v in V.difference(CN[u])) >= d[u, 1],
                     name=f"Valid7_{u}_{i}",
                 )
+
     for v in V:
         if len(CN[v]) < len(V) / K:
             m.addConstr(d[v, 1] == 0, name=f"Valid7.1_{v}")
+
+    if len(V) / K <= 2:
+        for u in {v for v in V if len(CN[v]) == 2}:
+            # get the neighbor of pendant vertex u
+            cn_u = list(CN[u])
+            w = cn_u[0] if u != cn_u[0] else cn_u[1]
+            m.addConstr(
+                x[w, 1] >= d[u, 1],
+                name=f"Valid8_{u}_{1}",
+            )
 
     # run the model
     if SEARCH_FEASIBLE:
